@@ -332,6 +332,8 @@ export default function DreamPage() {
                       setRestoredImage(null);
                       setRestoredLoaded(false);
                       setError(null);
+                      setRenovationReport(null);
+                      setReportError(null);
                     }}
                     className="bg-blue-500 rounded-full text-white font-medium px-4 py-2 mt-8 hover:bg-blue-500/80 transition"
                   >
@@ -349,6 +351,47 @@ export default function DreamPage() {
                     className="bg-white rounded-full text-black border font-medium px-4 py-2 mt-8 hover:bg-gray-100 transition"
                   >
                     Download Generated Room
+                  </button>
+                )}
+                {restoredLoaded && !renovationReport && !reportLoading && (
+                  <div className="flex flex-col items-center mt-4">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <input
+                        type="checkbox"
+                        id="includeCostEstimates"
+                        checked={includeCostEstimates}
+                        onChange={(e) => setIncludeCostEstimates(e.target.checked)}
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                      <label htmlFor="includeCostEstimates" className="text-sm text-gray-600">
+                        Include cost estimates in report
+                      </label>
+                    </div>
+                    <button
+                      onClick={generateReport}
+                      className="bg-green-500 rounded-full text-white font-medium px-4 py-2 hover:bg-green-600 transition"
+                    >
+                      Generate Analysis Report
+                    </button>
+                  </div>
+                )}
+                {reportLoading && (
+                  <button
+                    disabled
+                    className="bg-green-500 rounded-full text-white font-medium px-4 py-2 mt-4 w-40"
+                  >
+                    <span className="flex items-center justify-center">
+                      <LoadingDots color="white" style="small" />
+                      <span className="ml-2">Analyzing...</span>
+                    </span>
+                  </button>
+                )}
+                {renovationReport && (
+                  <button
+                    onClick={() => setRenovationReport(null)}
+                    className="bg-gray-500 rounded-full text-white font-medium px-4 py-2 mt-4 hover:bg-gray-600 transition"
+                  >
+                    Regenerate Report
                   </button>
                 )}
               </div>
