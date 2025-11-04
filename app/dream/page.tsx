@@ -85,23 +85,100 @@ export default function DreamPage() {
   async function generatePhoto(fileUrl: string) {
     await new Promise((resolve) => setTimeout(resolve, 200));
     setLoading(true);
+    setError(null);
+    setRenovationReport(null);
+    setReportError(null);
+
     const res = await fetch("/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ imageUrl: fileUrl, theme, room }),
+      body: JSON.stringify({
+        imageUrl: fileUrl,
+        theme,
+        room,
+        generateReport: false // Don't generate report during initial photo generation
+      }),
     });
 
     let newPhoto = await res.json();
     if (res.status !== 200) {
       setError(newPhoto);
     } else {
-      setRestoredImage(newPhoto[1]);
+      // Handle both legacy and new response formats
+      if (typeof newPhoto === 'string') {
+        // Legacy response format - just the image URL string
+        setRestoredImage(newPhoto);
+      } else if (newPhoto.renovatedImage) {
+        // New response format - object with renovatedImage and optional renovationReport
+        setRestoredImage(newPhoto.renovatedImage);
+        if (newPhoto.renovationReport) {
+          setRenovationReport(newPhoto.renovationReport);
+        }
+      } else if (Array.isArray(newPhoto) && newPhoto.length > 1) {
+        // Legacy array format
+        setRestoredImage(newPhoto[1]);
+      } else {
+        setRestoredImage(newPhoto);
+      }
     }
     setTimeout(() => {
       setLoading(false);
     }, 1300);
+  }
+
+  async function generateReport() {
+    if (!originalPhoto || !restoredImage) return;
+
+    setReportLoading(true);
+    setReportError(null);
+
+    try {
+      const res = await fetch("/report", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          originalImage: originalPhoto,
+          renovatedImage: restoredImage,
+          theme,
+          roomType: room,
+          includeCostEstimates,
+        }),
+      });
+
+      const reportData = await res.json();
+
+      if (res.status !== 200) {
+        setReportError(reportData.error || "Failed to generate report");
+      } else {
+        setRenovationReport(reportData);
+      }
+    } catch (error) {
+      setReportError("Network error while generating report");
+    } finally {
+      setReportLoading(false);
+    }
+  }
+
+  function handleDownloadReport() {
+    if (!renovationReport) return;
+
+    // Create a temporary JSON blob for download
+    const reportBlob = new Blob([JSON.stringify(renovationReport, null, 2)], {
+      type: 'application/json',
+    });
+
+    const url = URL.createObjectURL(reportBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `renovation-report-${room.toLowerCase().replace(' ', '-')}-${theme.toLowerCase()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
   return (
