@@ -398,6 +398,28 @@ export default function DreamPage() {
             </motion.div>
           </AnimatePresence>
         </ResizablePanel>
+
+        {/* Report Error Display */}
+        {reportError && (
+          <div className="mt-6 max-w-4xl mx-auto">
+            <div
+              className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded-xl"
+              role="alert"
+            >
+              <span className="block sm:inline">{reportError}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Renovation Report Display */}
+        {renovationReport && (
+          <div className="mt-6 max-w-4xl mx-auto">
+            <ReportDisplay
+              report={renovationReport}
+              onDownloadReport={handleDownloadReport}
+            />
+          </div>
+        )}
       </main>
       <Footer />
     </div>
