@@ -440,6 +440,12 @@ export default function DreamPage() {
         )}
       </main>
       <Footer />
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={settingsModalOpen}
+        onClose={() => setSettingsModalOpen(false)}
+      />
     </div>
   );
 }
