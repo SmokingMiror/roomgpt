@@ -88,7 +88,30 @@ export async function POST(request: Request) {
     }
   }
 
-  return NextResponse.json(
-    restoredImage ? restoredImage : "Failed to restore image"
-  );
+  if (!restoredImage) {
+    return NextResponse.json("Failed to restore image");
+  }
+
+  // Generate renovation report if requested
+  let renovationReport = null;
+  if (generateReport && process.env.OPENAI_API_KEY) {
+    try {
+      renovationReport = await generateRenovationReport({
+        originalImage: imageUrl,
+        renovatedImage: restoredImage,
+        theme,
+        roomType: room,
+        includeCostEstimates,
+      });
+    } catch (reportError) {
+      console.error('Failed to generate renovation report:', reportError);
+      // Continue without report - this is not a blocking error
+      renovationReport = null;
+    }
+  }
+
+  return NextResponse.json({
+    renovatedImage: restoredImage,
+    renovationReport,
+  });
 }
