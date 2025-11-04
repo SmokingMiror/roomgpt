@@ -52,6 +52,10 @@ export default function DreamPage() {
   const [photoName, setPhotoName] = useState<string | null>(null);
   const [theme, setTheme] = useState<themeType>("Modern");
   const [room, setRoom] = useState<roomType>("Living Room");
+  const [renovationReport, setRenovationReport] = useState<object | null>(null);
+  const [reportLoading, setReportLoading] = useState<boolean>(false);
+  const [reportError, setReportError] = useState<string | null>(null);
+  const [includeCostEstimates, setIncludeCostEstimates] = useState<boolean>(false);
 
   const UploadDropZone = () => (
     <UploadDropzone
