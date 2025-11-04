@@ -164,22 +164,37 @@ export default function DreamPage() {
     }
   }
 
-  function handleDownloadReport() {
-    if (!renovationReport) return;
+  async function handleDownloadReport() {
+    if (!renovationReport || !originalPhoto || !restoredImage) return;
 
-    // Create a temporary JSON blob for download
-    const reportBlob = new Blob([JSON.stringify(renovationReport, null, 2)], {
-      type: 'application/json',
-    });
+    try {
+      const reportData = {
+        report: renovationReport,
+        originalImage: originalPhoto,
+        renovatedImage: restoredImage,
+        roomType: room,
+        theme: theme,
+      };
 
-    const url = URL.createObjectURL(reportBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `renovation-report-${room.toLowerCase().replace(' ', '-')}-${theme.toLowerCase()}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+      const reportBlob = await exportReportAsPDF(reportData);
+      const filename = generateReportFilename(room, theme);
+      downloadReport(reportBlob, filename);
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      // Fallback to JSON download if HTML export fails
+      const reportBlob = new Blob([JSON.stringify(renovationReport, null, 2)], {
+        type: 'application/json',
+      });
+
+      const url = URL.createObjectURL(reportBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `renovation-report-${room.toLowerCase().replace(' ', '-')}-${theme.toLowerCase()}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
   }
 
   return (
