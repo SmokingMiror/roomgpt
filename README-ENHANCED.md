@@ -107,12 +107,20 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 5. Download the generated image
 
 ### 🆕 Generating Analysis Reports
+
+**Automatic Generation (Recommended):**
+1. Enable "Auto-generate renovation report" in step 4 (AI Analysis Options)
+2. Optionally check "Include cost estimates" for detailed pricing
+3. Upload your room image - report will generate automatically after renovation
+4. View comprehensive report with style score, key changes, design analysis, color palette, recommendations, and cost estimates
+5. Download report as HTML file (can be printed to PDF)
+
+**Manual Generation:**
 1. Complete a room renovation first
 2. Check "Include cost estimates in report" if desired (optional)
 3. Click "Generate Analysis Report"
 4. Wait for AI analysis to complete
-5. View comprehensive report with style score, key changes, design analysis, color palette, recommendations, and cost estimates
-6. Download report as HTML file (can be printed to PDF)
+5. View comprehensive report and download as needed
 
 ### Settings Configuration
 1. Click "Settings" button in header
