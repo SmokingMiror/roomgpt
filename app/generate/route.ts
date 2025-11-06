@@ -83,24 +83,44 @@ export async function POST(request: Request) {
 
   // GET request to get the status of the image restoration process & return the result when it's ready
   let restoredImage: string | null = null;
-  while (!restoredImage) {
-    // Loop in 1s intervals until the alt text is ready
-    console.log("polling for result...");
-    let finalResponse = await fetch(endpointUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Token " + process.env.REPLICATE_API_KEY,
-      },
-    });
-    let jsonFinalResponse = await finalResponse.json();
+  let attempts = 0;
+  const maxAttempts = 120; // 2 minutes max wait time
 
-    if (jsonFinalResponse.status === "succeeded") {
-      restoredImage = jsonFinalResponse.output;
-    } else if (jsonFinalResponse.status === "failed") {
-      break;
-    } else {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  while (!restoredImage && attempts < maxAttempts) {
+    attempts++;
+    console.log(`Polling for result... Attempt ${attempts}/${maxAttempts}`);
+
+    try {
+      let finalResponse = await retryFetch(endpointUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Token " + replicateApiToken,
+        },
+      }, {
+        maxRetries: 3,
+        baseDelay: 500,
+        onRetry: (attempt, error) => {
+          console.log(`Retrying status check (attempt ${attempt}): ${error.message}`);
+        }
+      });
+
+      let jsonFinalResponse = await finalResponse.json();
+
+      if (jsonFinalResponse.status === "succeeded") {
+        restoredImage = jsonFinalResponse.output;
+        console.log("Replicate generation completed successfully");
+      } else if (jsonFinalResponse.status === "failed") {
+        console.error("Replicate generation failed:", jsonFinalResponse.error);
+        break;
+      } else {
+        // Still processing, wait before next poll
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    } catch (error) {
+      console.error("Error polling Replicate status:", error);
+      if (attempts >= maxAttempts - 1) break;
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait longer on error
     }
   }
 
