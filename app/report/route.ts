@@ -5,15 +5,11 @@ import { retryWithBackoff } from "../../utils/retry";
 
 export async function POST(request: Request) {
   try {
-    const { originalImage, renovatedImage, theme, roomType, includeCostEstimates = false } = await request.json();
+    const body = await request.json();
 
-    // Validate required parameters
-    if (!originalImage || !renovatedImage || !theme || !roomType) {
-      return NextResponse.json(
-        { error: "Missing required parameters: originalImage, renovatedImage, theme, roomType" },
-        { status: 400 }
-      );
-    }
+    // Validate request body using Zod schema
+    const validatedRequest = validateReportGenerationRequest(body);
+    const { originalImage, renovatedImage, theme, roomType, includeCostEstimates = false } = validatedRequest;
 
     // Check if OpenAI API key is configured
     if (!process.env.OPENAI_API_KEY) {
