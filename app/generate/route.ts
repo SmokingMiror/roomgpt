@@ -37,7 +37,11 @@ export async function POST(request: Request) {
     }
   }
 
-  const { imageUrl, theme, room, generateReport = false, includeCostEstimates = false } = await request.json();
+  const body = await request.json();
+
+  // Validate request body
+  const validatedRequest = validateGenerateRequest(body);
+  const { imageUrl, theme, room, generateReport = false, includeCostEstimates = false } = validatedRequest;
 
   // POST request to Replicate to start the image restoration generation process
   let startResponse = await fetch("https://api.replicate.com/v1/predictions", {
