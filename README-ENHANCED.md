@@ -179,11 +179,15 @@ Generates standalone analysis report for existing images.
 ### New Utilities
 - **reportGeneration.ts**: OpenAI Vision API integration and prompt engineering
 - **reportExport.ts**: HTML report generation and download functionality
+- **retry.ts**: Exponential backoff retry handler for rate limiting (429 errors)
+- **types/reportTypes.ts**: Zod schemas for type safety and validation
 
 ### Enhanced Files
-- **app/generate/route.ts**: Added optional report generation
-- **app/dream/page.tsx**: Enhanced UI with report controls
+- **app/generate/route.ts**: Enhanced with FlipAI model and retry logic
+- **app/report/route.ts**: Dedicated endpoint for standalone report generation
+- **app/dream/page.tsx**: Enhanced UI with auto-generation controls
 - **components/Header.tsx**: Added settings integration
+- **package.json**: Added OpenAI and Zod dependencies
 
 ## Error Handling
 
