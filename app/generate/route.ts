@@ -132,6 +132,7 @@ export async function POST(request: Request) {
   let renovationReport = null;
   if (generateReport && process.env.OPENAI_API_KEY) {
     try {
+      console.log("Starting renovation report generation...");
       renovationReport = await generateRenovationReport({
         originalImage: imageUrl,
         renovatedImage: restoredImage,
@@ -139,10 +140,13 @@ export async function POST(request: Request) {
         roomType: room,
         includeCostEstimates,
       });
+      console.log("Renovation report generated successfully");
     } catch (reportError) {
       console.error('Failed to generate renovation report:', reportError);
-      // Continue without report - this is not a blocking error
-      renovationReport = null;
+
+      // Provide fallback report if AI analysis fails
+      console.log('Providing fallback report template...');
+      renovationReport = createFallbackReport(theme, room, includeCostEstimates);
     }
   }
 
