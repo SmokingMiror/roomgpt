@@ -58,6 +58,7 @@ export default function DreamPage() {
   const [reportLoading, setReportLoading] = useState<boolean>(false);
   const [reportError, setReportError] = useState<string | null>(null);
   const [includeCostEstimates, setIncludeCostEstimates] = useState<boolean>(false);
+  const [autoGenerateReport, setAutoGenerateReport] = useState<boolean>(true);
   const [settingsModalOpen, setSettingsModalOpen] = useState<boolean>(false);
 
   const UploadDropZone = () => (
