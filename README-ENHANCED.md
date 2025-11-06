@@ -5,9 +5,10 @@ Enhanced RoomGPT application that combines AI-powered room renovation with compr
 ## Features
 
 ### Core Functionality
-- **AI Room Renovation**: Transform your room images using Replicate API with various themes (Modern, Vintage, Minimalist, Professional, Tropical)
+- **AI Room Renovation**: Transform your room images using Replicate API with the specified `thijssdaniels/room-gpt` model
 - **Multi-room Support**: Works with Living Room, Dining Room, Bedroom, Bathroom, Office, and Gaming Room
 - **Before/After Comparison**: Side-by-side slider to compare original and renovated rooms
+- **Automatic Report Generation**: Configurable auto-generation of renovation reports after image creation
 
 ### 🆕 AI Analysis Features
 - **Renovation Analysis Reports**: Comprehensive AI-generated analysis of room transformations
