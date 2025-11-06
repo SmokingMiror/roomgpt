@@ -120,6 +120,7 @@ export default function DreamPage() {
         setRestoredImage(newPhoto.renovatedImage);
         if (newPhoto.renovationReport) {
           setRenovationReport(newPhoto.renovationReport);
+          console.log("Auto-generated report received from backend");
         }
       } else if (Array.isArray(newPhoto) && newPhoto.length > 1) {
         // Legacy array format
