@@ -19,16 +19,36 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate renovation report
-    const renovationReport = await generateRenovationReport({
-      originalImage,
-      renovatedImage,
-      theme,
-      roomType,
-      includeCostEstimates,
+    // Generate renovation report with retry logic and fallback
+    console.log("Starting dedicated report generation...");
+    const result = await retryWithBackoff(async () => {
+      return await generateRenovationReport({
+        originalImage,
+        renovatedImage,
+        theme,
+        roomType,
+        includeCostEstimates,
+      });
+    }, {
+      maxRetries: 6,
+      baseDelay: 1000,
+      maxDelay: 32000,
+      onRetry: (attempt, error) => {
+        console.log(`Report generation retry ${attempt}: ${error.message}`);
+      }
     });
 
-    return NextResponse.json(renovationReport);
+    if (result.success) {
+      console.log("Report generated successfully");
+      return NextResponse.json(result.data);
+    } else {
+      console.error("Report generation failed after retries:", result.error);
+
+      // Provide fallback report if all retries fail
+      console.log("Providing fallback report template...");
+      const fallbackReport = createFallbackReport(theme, roomType, includeCostEstimates);
+      return NextResponse.json(fallbackReport);
+    }
   } catch (error) {
     console.error("Error generating renovation report:", error);
 
