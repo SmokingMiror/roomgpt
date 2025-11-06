@@ -63,10 +63,13 @@ cp .env.example .env.local
 
 Edit `.env.local` with your API keys:
 ```env
-# Required for room generation
-REPLICATE_API_KEY=your_replicate_api_key_here
+# FlipAI requirement: Replicate API Token for room generation
+REPLICATE_API_TOKEN=your_replicate_api_token_here
 
-# Required for AI analysis reports
+# Legacy support (backward compatibility)
+REPLICATE_API_KEY=your_replicate_api_token_here
+
+# FlipAI requirement: OpenAI API Key for analysis reports
 OPENAI_API_KEY=your_openai_api_key_here
 
 # Optional: Image upload (defaults to free tier)
@@ -76,7 +79,7 @@ NEXT_PUBLIC_UPLOAD_API_KEY=your_bytescale_api_key_here
 UPSTASH_REDIS_REST_URL=your_upstash_redis_url_here
 UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token_here
 
-# AI Model selection (gpt-4o-mini recommended)
+# FlipAI requirement: AI Model selection (gpt-4o-mini recommended)
 OPENAI_MODEL=gpt-4o-mini
 ```
 
