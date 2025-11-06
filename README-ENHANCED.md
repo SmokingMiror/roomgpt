@@ -25,7 +25,9 @@ Enhanced RoomGPT application that combines AI-powered room renovation with compr
 - **Settings Modal**: Choose between GPT-4o-mini (faster, cost-effective) and GPT-4o (higher quality) models
 - **Report Download**: Export comprehensive reports as HTML files (printable to PDF)
 - **Cost Estimate Toggle**: Option to include/exclude cost estimates in reports
+- **Auto-Generate Toggle**: Configure automatic report generation after renovation
 - **Error Handling**: Graceful handling of API failures with clear user feedback
+- **Rate Limit Recovery**: Automatic retry with exponential backoff for 429 errors
 
 ## How it works
 
