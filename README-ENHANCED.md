@@ -1,6 +1,6 @@
-# RoomGPT - AI Room Renovation with Analysis Reports
+# FlipAI RoomGPT - AI Room Renovation with Analysis Reports
 
-Enhanced RoomGPT application that combines AI-powered room renovation with comprehensive analysis reports using OpenAI's Vision API.
+Enhanced RoomGPT application that combines AI-powered room renovation with comprehensive analysis reports using OpenAI's Vision API. This implementation follows FlipAI specifications for seamless room renovation workflow.
 
 ## Features
 
