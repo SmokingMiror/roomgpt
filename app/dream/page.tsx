@@ -258,11 +258,49 @@ export default function DreamPage() {
                         src="/number-3-white.svg"
                         width={30}
                         height={30}
-                        alt="1 icon"
+                        alt="3 icon"
                       />
                       <p className="text-left font-medium">
                         Upload a picture of your room.
                       </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 w-full max-w-sm">
+                    <div className="flex mt-6 w-96 items-center space-x-3">
+                      <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                        AI
+                      </div>
+                      <p className="text-left font-medium">
+                        Configure AI analysis options.
+                      </p>
+                    </div>
+                    <div className="mt-3 space-y-2 text-sm">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="autoGenerateReport"
+                          checked={autoGenerateReport}
+                          onChange={(e) => setAutoGenerateReport(e.target.checked)}
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                        <label htmlFor="autoGenerateReport" className="text-gray-300">
+                          Auto-generate renovation report
+                        </label>
+                      </div>
+                      {autoGenerateReport && (
+                        <div className="flex items-center space-x-2 ml-6">
+                          <input
+                            type="checkbox"
+                            id="autoIncludeCosts"
+                            checked={includeCostEstimates}
+                            onChange={(e) => setIncludeCostEstimates(e.target.checked)}
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                          />
+                          <label htmlFor="autoIncludeCosts" className="text-gray-300">
+                            Include cost estimates
+                          </label>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </>
