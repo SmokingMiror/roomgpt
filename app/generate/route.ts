@@ -43,12 +43,22 @@ export async function POST(request: Request) {
   const validatedRequest = validateGenerateRequest(body);
   const { imageUrl, theme, room, generateReport = false, includeCostEstimates = false } = validatedRequest;
 
-  // POST request to Replicate to start the image restoration generation process
-  let startResponse = await fetch("https://api.replicate.com/v1/predictions", {
+  // Use FlipAI preferred environment variable with fallback
+  const replicateApiToken = process.env.REPLICATE_API_TOKEN || process.env.REPLICATE_API_KEY;
+
+  if (!replicateApiToken) {
+    return NextResponse.json(
+      { error: "Replicate API token not configured. Please set REPLICATE_API_TOKEN environment variable." },
+      { status: 500 }
+    );
+  }
+
+  // POST request to Replicate to start the image restoration generation process with retry logic
+  let startResponse = await retryFetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Token " + process.env.REPLICATE_API_KEY,
+      Authorization: "Token " + replicateApiToken,
     },
     body: JSON.stringify({
       version:
