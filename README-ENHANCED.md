@@ -217,18 +217,23 @@ The application includes comprehensive error handling:
 ```
 roomgpt/
 ├── app/
-│   ├── generate/route.ts      # Enhanced generation endpoint
-│   ├── report/route.ts        # New report generation endpoint
-│   └── dream/page.tsx         # Enhanced UI
+│   ├── generate/route.ts      # Enhanced generation endpoint with FlipAI model
+│   ├── report/route.ts        # Dedicated report generation endpoint
+│   └── dream/page.tsx         # Enhanced UI with auto-generation
 ├── components/
-│   ├── ReportDisplay.tsx      # New report display component
-│   ├── SettingsModal.tsx      # New settings modal
-│   └── Header.tsx             # Enhanced header
+│   ├── ReportDisplay.tsx      # Report display component
+│   ├── SettingsModal.tsx      # AI model selection modal
+│   └── Header.tsx             # Enhanced header with settings
 ├── utils/
-│   ├── reportGeneration.ts    # OpenAI integration
-│   ├── reportExport.ts        # Export functionality
-│   └── dropdownTypes.ts       # Existing types
-└── .env.example               # Environment variables template
+│   ├── reportGeneration.ts    # OpenAI Vision API integration
+│   ├── reportExport.ts        # HTML export functionality
+│   ├── retry.ts               # Exponential backoff retry logic
+│   └── dropdownTypes.ts       # Existing type definitions
+├── types/
+│   └── reportTypes.ts         # Zod schemas for validation
+├── test-endpoints.js          # API testing script
+├── .env.example               # Environment variables template
+└── README-ENHANCED.md         # This documentation
 ```
 
 ### Technologies Used
