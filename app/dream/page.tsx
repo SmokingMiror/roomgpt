@@ -102,7 +102,8 @@ export default function DreamPage() {
         imageUrl: fileUrl,
         theme,
         room,
-        generateReport: false // Don't generate report during initial photo generation
+        generateReport: autoGenerateReport, // Auto-generate report if enabled
+        includeCostEstimates: autoGenerateReport ? includeCostEstimates : false,
       }),
     });
 
